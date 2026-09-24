@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#151515">
+  <meta name="description" content="qoori — визуал и арт-дирекшн в Aether Dreams.">
+  <title>qoori — Aether Dreams</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-artist="qoori">
+  <div class="noise"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Aether Dreams — на главную">AETHER DREAMS</a>
+
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="index.html#releases">Релизы</a>
+      <a href="artists.html">Артисты</a>
+      <a href="journal.html">Журнал</a>
+      <a href="archive.html">Архив</a>
+      <a href="about.html">О нас</a>
+    </nav>
+
+    <a class="links-link" href="index.html#links">Ссылки <span class="status-dot"></span></a>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <a class="back-link" href="artists.html">← Все артисты</a>
+    </section>
+
+    <section class="artist-detail" id="artist-detail-root">
+      <div class="artist-detail-photo"></div>
+      <div class="artist-detail-text">
+        <span class="artist-detail-role" id="artist-detail-role"></span>
+        <h1 class="artist-detail-name" id="artist-detail-name"></h1>
+        <p class="artist-detail-bio" id="artist-detail-bio"></p>
+        <ul class="artist-detail-meta" id="artist-detail-meta"></ul>
+      </div>
+      <div class="artist-releases">
+        <h2>Релизы</h2>
+        <div class="release-strip" id="release-strip"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">AETHER DREAMS</div>
+      <p>© 2026 Aether Dreams. Все права защищены.</p>
+    </div>
+    <div class="footer-center">Независимый музыкальный коллектив</div>
+    <div class="footer-socials">
+      <a href="#">IG</a>
+      <a href="#">SC</a>
+      <a href="#">BC</a>
+      <a href="#">YT</a>
+      <span class="status-dot"></span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="data.js"></script>
+</body>
+</html>
