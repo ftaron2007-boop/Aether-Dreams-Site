@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: YOUR-GITHUB-USERNAME/YOUR-REPO-NAME
+  repo: ftaron2007-boop/Aether-Dreams-Site
   branch: main
 
 publish_mode: editorial_workflow
