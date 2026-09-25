@@ -3,112 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Админка — Aether Dreams</title>
+  <meta name="theme-color" content="#151515">
+  <meta name="description" content="Aether Dreams — независимый музыкальный коллектив.">
+  <title>Aether Dreams — независимый музыкальный коллектив</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    CMS.registerPreviewStyle('/styles.css');
+  <div class="noise"></div>
 
-    function resolveImage(entryProps, path, fallback) {
-      if (!path) return null;
-      try {
-        var asset = entryProps.getAsset(path);
-        return asset ? asset.toString() : fallback;
-      } catch (e) {
-        return fallback;
-      }
-    }
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Aether Dreams — на главную">AETHER DREAMS</a>
 
-    var ArtistsPreview = createClass({
-      render: function () {
-        var props = this.props;
-        var artists = props.entry.getIn(['data', 'artists']) || [];
-        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
-          h('div', { className: 'artist-grid' },
-            artists.map(function (a, i) {
-              var img = resolveImage(props, a.get('photoImage'));
-              var photoStyle = img ? { backgroundImage: 'url(' + img + ')' } : {};
-              var photoClass = img ? 'artist-photo' : ('artist-photo ' + (a.get('photo') || ''));
-              return h('div', { className: 'artist-card', key: i },
-                h('div', { className: photoClass, style: photoStyle }),
-                h('span', { className: 'artist-role' }, a.get('role')),
-                h('h2', { className: 'artist-name' }, a.get('name')),
-                h('p', { className: 'artist-bio' }, a.get('bio'))
-              );
-            }).toArray()
-          )
-        );
-      }
-    });
-    CMS.registerPreviewTemplate('artists', ArtistsPreview);
+    <nav class="nav" aria-label="Основная навигация">
+      <a href="#releases">Релизы</a>
+      <a href="artists.html">Артисты</a>
+      <a href="journal.html">Журнал</a>
+      <a href="archive.html">Архив</a>
+      <a href="about.html">О нас</a>
+    </nav>
 
-    var JournalPreview = createClass({
-      render: function () {
-        var entries = this.props.entry.getIn(['data', 'entries']) || [];
-        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
-          h('div', { className: 'journal-list' },
-            entries.map(function (e, i) {
-              return h('article', { className: 'journal-item', key: i },
-                h('span', { className: 'journal-date' }, e.get('date')),
-                h('div', {},
-                  h('h2', { className: 'journal-title' }, e.get('title')),
-                  h('p', { className: 'journal-excerpt' }, e.get('excerpt'))
-                )
-              );
-            }).toArray()
-          )
-        );
-      }
-    });
-    CMS.registerPreviewTemplate('journal', JournalPreview);
+    <a class="links-link" href="#links">Ссылки <span class="status-dot"></span></a>
+  </header>
 
-    var ReleasesPreview = createClass({
-      render: function () {
-        var props = this.props;
-        var releases = props.entry.getIn(['data', 'releases']) || [];
-        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
-          h('div', { className: 'release-grid' },
-            releases.map(function (r, i) {
-              var img = resolveImage(props, r.get('coverImage'));
-              var coverStyle = img ? { backgroundImage: 'url(' + img + ')' } : {};
-              var coverClass = img ? 'cover' : ('cover ' + (r.get('cover') || ''));
-              return h('article', { className: 'release', key: i },
-                h('div', { className: coverClass, style: coverStyle }),
-                h('div', { className: 'release-info' },
-                  h('h3', {}, r.get('title')),
-                  h('p', {}, (r.get('type') || '') + ' · ' + (r.get('year') || ''))
-                )
-              );
-            }).toArray()
-          )
-        );
-      }
-    });
-    CMS.registerPreviewTemplate('releases', ReleasesPreview);
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Независимый музыкальный коллектив</p>
+        <h1>AETHER<br>DREAMS</h1>
+        <div class="hero-line"></div>
+        <p class="hero-description">
+          Исследуем эмоции, воспоминания и пространство между звуком и тишиной.
+          Коллектив независимых артистов.
+        </p>
+        <a class="scroll-cue" href="#releases">
+          <span>Прокрутите вниз</span>
+          <span class="arrow-down">↓</span>
+        </a>
+      </div>
 
-    var AboutPreview = createClass({
-      render: function () {
-        var data = this.props.entry.get('data');
-        var values = data.get('values') || [];
-        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
-          h('div', { className: 'about-content' },
-            h('p', { className: 'about-lede' }, data.get('lede')),
-            h('div', { className: 'about-block' }, h('h2', {}, 'Кто мы'), h('p', {}, data.get('whoWeAre'))),
-            h('div', { className: 'about-block' }, h('h2', {}, 'Что мы делаем'), h('p', {}, data.get('whatWeMake'))),
-            h('div', { className: 'about-block' }, h('h2', {}, 'Ценности'),
-              h('ul', { className: 'value-list' },
-                values.map(function (v, i) {
-                  return h('li', { key: i }, h('span', {}, String(i + 1).padStart(2, '0')), v);
-                }).toArray()
-              )
-            ),
-            h('div', { className: 'about-block' }, h('h2', {}, 'Контакты'), h('p', {}, data.get('contact')))
-          )
-        );
-      }
-    });
-    CMS.registerPreviewTemplate('about', AboutPreview);
-  </script>
+      <div class="hero-grid" aria-hidden="true">
+        <div class="visual visual-door"></div>
+        <div class="visual visual-field"></div>
+        <div class="visual visual-clouds"></div>
+        <div class="visual visual-water"></div>
+        <div class="visual visual-haze"></div>
+        <div class="visual visual-window"></div>
+        <div class="visual visual-light"></div>
+      </div>
+    </section>
+
+    <section class="releases section" id="releases">
+      <div class="section-head">
+        <div>
+          <span class="section-index">01</span>
+          <h2>Последние релизы</h2>
+        </div>
+        <a href="#" class="text-link">Смотреть все <span>↗</span></a>
+      </div>
+
+      <div class="release-grid" id="release-grid"></div>
+    </section>
+
+    <section class="feature-grid section">
+      <a class="feature feature-artists" href="artists.html">
+        <div class="feature-overlay"></div>
+        <div class="feature-content">
+          <span class="feature-number">02</span>
+          <h2>Артисты</h2>
+          <p>Познакомьтесь с участниками</p>
+          <span class="feature-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="feature feature-journal" href="journal.html">
+        <div class="feature-overlay"></div>
+        <div class="feature-content">
+          <span class="feature-number">03</span>
+          <h2>Журнал</h2>
+          <p>Новости и истории</p>
+          <span class="feature-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="feature feature-archive" href="archive.html">
+        <div class="feature-overlay"></div>
+        <div class="feature-content">
+          <span class="feature-number">04</span>
+          <h2>Архив</h2>
+          <p>Визуальный архив</p>
+          <span class="feature-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="feature feature-about" href="about.html">
+        <div class="feature-overlay"></div>
+        <div class="feature-content">
+          <span class="feature-number">05</span>
+          <h2>О нас</h2>
+          <p>Наше видение</p>
+          <span class="feature-arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="feature feature-links" id="links" href="#">
+        <div class="feature-overlay"></div>
+        <div class="feature-content">
+          <span class="feature-number">06</span>
+          <h2>Ссылки</h2>
+          <p>Подписывайтесь</p>
+          <span class="feature-arrow">↗</span>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">AETHER DREAMS</div>
+      <p>© 2026 Aether Dreams. Все права защищены.</p>
+    </div>
+    <div class="footer-center">Независимый музыкальный коллектив</div>
+    <div class="footer-socials">
+      <a href="#">IG</a>
+      <a href="#">SC</a>
+      <a href="#">BC</a>
+      <a href="#">YT</a>
+      <span class="status-dot"></span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="data.js"></script>
 </body>
 </html>
