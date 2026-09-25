@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка — Aether Dreams</title>
+</head>
+<body>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    CMS.registerPreviewStyle('/styles.css');
+
+    function resolveImage(entryProps, path, fallback) {
+      if (!path) return null;
+      try {
+        var asset = entryProps.getAsset(path);
+        return asset ? asset.toString() : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    var ArtistsPreview = createClass({
+      render: function () {
+        var props = this.props;
+        var artists = props.entry.getIn(['data', 'artists']) || [];
+        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
+          h('div', { className: 'artist-grid' },
+            artists.map(function (a, i) {
+              var img = resolveImage(props, a.get('photoImage'));
+              var photoStyle = img ? { backgroundImage: 'url(' + img + ')' } : {};
+              var photoClass = img ? 'artist-photo' : ('artist-photo ' + (a.get('photo') || ''));
+              return h('div', { className: 'artist-card', key: i },
+                h('div', { className: photoClass, style: photoStyle }),
+                h('span', { className: 'artist-role' }, a.get('role')),
+                h('h2', { className: 'artist-name' }, a.get('name')),
+                h('p', { className: 'artist-bio' }, a.get('bio'))
+              );
+            }).toArray()
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate('artists', ArtistsPreview);
+
+    var JournalPreview = createClass({
+      render: function () {
+        var entries = this.props.entry.getIn(['data', 'entries']) || [];
+        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
+          h('div', { className: 'journal-list' },
+            entries.map(function (e, i) {
+              return h('article', { className: 'journal-item', key: i },
+                h('span', { className: 'journal-date' }, e.get('date')),
+                h('div', {},
+                  h('h2', { className: 'journal-title' }, e.get('title')),
+                  h('p', { className: 'journal-excerpt' }, e.get('excerpt'))
+                )
+              );
+            }).toArray()
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate('journal', JournalPreview);
+
+    var ReleasesPreview = createClass({
+      render: function () {
+        var props = this.props;
+        var releases = props.entry.getIn(['data', 'releases']) || [];
+        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
+          h('div', { className: 'release-grid' },
+            releases.map(function (r, i) {
+              var img = resolveImage(props, r.get('coverImage'));
+              var coverStyle = img ? { backgroundImage: 'url(' + img + ')' } : {};
+              var coverClass = img ? 'cover' : ('cover ' + (r.get('cover') || ''));
+              return h('article', { className: 'release', key: i },
+                h('div', { className: coverClass, style: coverStyle }),
+                h('div', { className: 'release-info' },
+                  h('h3', {}, r.get('title')),
+                  h('p', {}, (r.get('type') || '') + ' · ' + (r.get('year') || ''))
+                )
+              );
+            }).toArray()
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate('releases', ReleasesPreview);
+
+    var AboutPreview = createClass({
+      render: function () {
+        var data = this.props.entry.get('data');
+        var values = data.get('values') || [];
+        return h('div', { style: { padding: '24px', background: '#151515', minHeight: '100vh' } },
+          h('div', { className: 'about-content' },
+            h('p', { className: 'about-lede' }, data.get('lede')),
+            h('div', { className: 'about-block' }, h('h2', {}, 'Кто мы'), h('p', {}, data.get('whoWeAre'))),
+            h('div', { className: 'about-block' }, h('h2', {}, 'Что мы делаем'), h('p', {}, data.get('whatWeMake'))),
+            h('div', { className: 'about-block' }, h('h2', {}, 'Ценности'),
+              h('ul', { className: 'value-list' },
+                values.map(function (v, i) {
+                  return h('li', { key: i }, h('span', {}, String(i + 1).padStart(2, '0')), v);
+                }).toArray()
+              )
+            ),
+            h('div', { className: 'about-block' }, h('h2', {}, 'Контакты'), h('p', {}, data.get('contact')))
+          )
+        );
+      }
+    });
+    CMS.registerPreviewTemplate('about', AboutPreview);
+  </script>
+</body>
+</html>
